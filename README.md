@@ -1,4 +1,18 @@
 # General Conference Insights
+___
+
+# Results
+Results are placed into a dataframe and into a csv in this repo for convenience/visibility.
+
+Here are modern word usages (first image) compared to 1850s word usages (second image)
+
+### Modern Word Cloud
+![conference](https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/a3eee3fc-dacd-400c-aacd-231fe670c1c9)
+
+### Journal of Discourses Word Cloud
+<img width="934" alt="Screenshot 2023-06-12 at 9 20 42 PM" src="https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/80616b5a-4040-4459-895a-4f233f49d7c2">
+
+# Script
 The objective of this script is twofold:
 1. Scrape conference talks within desired time frame.
 2. Play with the results to discover trends and insights.
@@ -24,7 +38,6 @@ Questions of interest are:
 
 More questions to come!
 
-## Results
 Results are placed into a dataframe and into a csv in this repo for convenience/visibility.
 
 Here are modern word usages (first image) compared to 1850s word usages (second image)
