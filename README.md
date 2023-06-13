@@ -7,7 +7,7 @@ The objective of this script is twofold:
 Clone the repo into a local dir. Navigate to the directory and run the command `python3 main.py`
 
 ## Step 1: Scrape
-This url<https://www.churchofjesuschrist.org/study/general-conference?lang=eng> contains the tree of conferences from which the talks will be scraped. 
+(This url)<https://www.churchofjesuschrist.org/study/general-conference?lang=eng> contains the tree of conferences from which the talks will be scraped. 
 
 You can use the `list_conference_links()` function to see all conference urls.
 
