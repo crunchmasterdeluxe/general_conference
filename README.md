@@ -27,9 +27,22 @@ More questions to come!
 ## Results
 Results are placed into a dataframe and into a csv in this repo for convenience/visibility.
 
-## Personal Note
-![conference](https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/fae6e194-0d7e-4441-b89b-448b40b07e6e)
+Here are modern word usages (first image) compared to 1850s word usages (second image)
 
-One note as I dig into the data is that "Jesus Christ" is by far the most talked about word/phrase in general conference.
+###Modern Word Cloud
+![conference](https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/a3eee3fc-dacd-400c-aacd-231fe670c1c9)
+
+###Journal of Discourses Word Cloud
+<img width="934" alt="Screenshot 2023-06-12 at 9 20 42 PM" src="https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/80616b5a-4040-4459-895a-4f233f49d7c2">
+
+
+Here are word counts between the two eras. Keep in mind that there are much more words collected from general conference than from the journal of discourses. This will need to be changed to reflect word percentage of usage rather than counts.
+![text_comparison_1](https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/9335fe3a-e18b-472d-b233-e2e28f589896)
+
+
+
+## Personal Note
+
+One note as I dig into the data is that "God"/"Lord"/"Jesus Christ" are by far the most talked about word/phrase in general conference.
 
 It is nice to see that He is the center of discussion, even as the culture and focus over the decades has shifted.
