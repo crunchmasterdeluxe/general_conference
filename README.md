@@ -28,6 +28,8 @@ More questions to come!
 Results are placed into a dataframe and into a csv in this repo for convenience/visibility.
 
 ## Personal Note
+![conference](https://github.com/crunchmasterdeluxe/general_conference/assets/83776204/fae6e194-0d7e-4441-b89b-448b40b07e6e)
+
 One note as I dig into the data is that "Jesus Christ" is by far the most talked about word/phrase in general conference.
 
 It is nice to see that He is the center of discussion, even as the culture and focus over the decades has shifted.
