@@ -1,0 +1,193 @@
+---
+output: 
+  md_document:
+    variant: markdown+backtick_code_blocks
+    preserve_yaml: TRUE
+knit: (function(inputFile, encoding) {
+      out_dir <- "_portfolio";
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_dir=file.path(dirname(inputFile), out_dir))})
+title: Journal of Discourses Text Analysis
+---
+```{r, echo=FALSE}
+knitr::opts_knit$set(base.dir = "~/gannawag.github.io/docs/", base.url = "/")
+knitr::opts_chunk$set(fig.path = "assets/")
+library(data.table)
+library(ggplot2)
+
+library(tidyverse)
+library(text2vec)
+library(stringr)
+```
+
+
+Load the data
+```{r, echo=FALSE}
+id <- "1lzVNDUho-1m5G-T5iJMw0-GqaybgMPi9" # google file ID
+(jofd <- as.data.table(read.csv(sprintf("https://docs.google.com/uc?id=%s&export=download", id))))
+# https://drive.google.com/file/d/1lzVNDUho-1m5G-T5iJMw0-GqaybgMPi9/view?usp=sharing
+```
+
+
+
+```{r, echo=FALSE}
+names(jofd) <- c("index","title","heading","author","date","text")
+
+
+
+jofd[, author := gsub("^By ","",
+                      gsub(" during .*","",
+                           gsub(" in .*","",
+                                gsub(" made.*","",
+                                     gsub(" [D|d]elivered.*","",
+                                          gsub(".*? by ","",
+                                               gsub(" by the St. George.*","",heading)))))))]
+
+unique(jofd[, .(
+  gsub("^Apostle ","",
+  gsub("^Bishop ","",
+  gsub("^Counselor ","",
+  gsub("^Elder ","",
+  gsub("^Elders ","",
+  gsub("^President ","",
+  gsub("^Hon. ","",
+  gsub("^Honorable ","",
+  gsub("^Patriarch ","",
+  gsub("Geo\\.","George",
+  gsub("GeorgeQ","George Q",
+  gsub("E\\. T\\.","Ezra T.",
+  gsub("Chas\\.","Charles",
+  gsub("C\\. W\\.","Charles W.",
+  gsub("J\\. H\\.","John H.",
+  gsub("F\\. D\\.","Franklin D.",
+  gsub("H\\. W\\.","Henry W.",
+  gsub("D\\. H\\.","Daniel H.",
+       author)))))))))))))))))))])
+
+sort(unique(jofd$author))
+
+```
+
+```{r, echo=FALSE}
+
+# Parameters N-gram
+ngrams <- "single words"
+ngram <- c(1, 1)
+
+## Number of Topics
+K <- 4
+
+# Custom functions Remove quotation marks
+pasteNQ <- function(...) {
+  output <- paste(...)
+  noquote(output)
+}
+pasteNQ0 <- function(...) {
+  output <- paste0(...)
+  noquote(output)
+}
+
+
+prep_fun = function(x) {
+  # make text lower case
+  x = str_to_lower(x)
+  # remove non-alphanumeric symbols
+  x = str_replace_all(x, "[^[:alnum:]]", " ")
+  # collapse multiple spaces
+  str_replace_all(x, "\\s+", " ")
+}
+
+jofd[, clean := prep_fun(text)]
+
+
+#get vocab space
+it = itoken(jofd$clean, progressbar = FALSE)
+v = create_vocabulary(it)
+TERM_COUNT_MIN <- 25
+v = prune_vocabulary(v, doc_proportion_max = 0.1, term_count_min = TERM_COUNT_MIN)
+vectorizer = vocab_vectorizer(v)
+
+dtm = create_dtm(it, vectorizer)
+colnames(dtm)
+
+
+
+
+#the similarity matrix
+d1_d2_jac_sim = sim2(dtm, dtm, method = "jaccard", norm = "none")
+
+d1d2_dt <- as.data.table(as.matrix(d1_d2_jac_sim))
+```
+This matrix shows the similarity between each speech and every other speech. Diagonal elements are NA since the speech is exactly similar to itself.
+```{r, echo=FALSE}
+names(d1d2_dt) <- paste0("col_",names(d1d2_dt))
+for (X in names(d1d2_dt)){
+  d1d2_dt[get(X) == 1, (X) := NA]
+}
+
+```
+Find the most similar discourse to each discourse
+```{r, echo=FALSE}
+d1d2_dt[, index := seq_len(.N)]
+dt_max <- data.table(discourse = names(d1d2_dt))
+for (X in dt_max$discourse){
+  max <- d1d2_dt[,.(max(get(X),na.rm=T))]$V1
+  index <- paste(d1d2_dt[get(X) == max]$index,collapse=",")
+  dt_max[discourse == eval(X), max_score := max]
+  dt_max[discourse == eval(X), index_of_similar := index]
+}
+
+dt_max[,paste0("index_of_similar_",c(1,2,3)) := tstrsplit(index_of_similar, ",", fixed=TRUE)]
+
+jofd[, index_char := as.character(index)]
+setkey(jofd, index_char)
+
+setkey(dt_max, index_of_similar_1)
+dt_max[jofd, title_1 := title]
+dt_max[jofd, author_1 := author]
+setkey(dt_max, index_of_similar_2)
+dt_max[jofd, title_2 := title]
+dt_max[jofd, author_2 := author]
+setkey(dt_max, index_of_similar_3)
+dt_max[jofd, title_3 := title]
+dt_max[jofd, author_3 := author]
+
+dt_max[, own_index := gsub("col_","",discourse)]
+setkey(dt_max, own_index)
+dt_max[jofd, own_title := title]
+dt_max[jofd, own_author := author]
+
+dt_max[,.(own_title, title_1, title_2,title_3)]
+View(dt_max[,.(own_author, author_1, author_2,author_3)])
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+Speaking patterns of general authorities change over time as new general authorities speak and as each individual develops his or her speaking style. The modern prophetic instruction is more relevant for us than past prophets' (ark-building instructions aren't re-usable today), but the past prophets' words are still valuable. But at least *some* instruction is repeated throughout the ages, which makes us think that timeless content is worth paying extra attention to. 
+
+This project is a dabbling in text analysis to explore similarities between modern prophets and the prophets from 200 years ago. For modern prophets we looked at recent general conference addresses, for the prophets of the restoration we looked at the Journal of Discourses. 
+
+It's interesting to compare the speeches to each other also to see who gives similar style talks. (Who was the Jeffrey R. Holland of the 1860s?)
+
+First we looked at the Journal of Discourses on its own. 
+
+Which speakers are most similar? 
+
+Then we looked at the recent General Conference.
+
+Then we compared the JofD to GC.
