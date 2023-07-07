@@ -1,3 +1,5 @@
+from f_scraping import scrape_bible_dictionary
+
 people = ["Genesis",
           "Exodus",
           "Leviticus",
@@ -91,3 +93,5 @@ principles = ["faith",
               "life",
               "resurrection",
               "God"]
+
+bible_dictionary_words = scrape_bible_dictionary()
